@@ -8,6 +8,9 @@ shell: shell.o
 shell.o: shell.c makefile
 	gcc -c shell.c
 
+debug:	shell.c makefile
+	gcc -ggdb shell.c -o shell; gdb shell
+
 run:	shell
 	./shell
 

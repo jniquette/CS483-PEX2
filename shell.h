@@ -2,11 +2,13 @@
 #include <string.h>
 #include <stdlib.h>
 #include <limits.h>
+#include "list.c"
 
 //Function Prototypes:
 void printError(char *string);
 void printSuccess(char *string);
 void cd(char *newdir, char *curdir);
+node* parseCommand(char *input, node *command);
 
 
 #define KNRM  "\x1B[0m"
@@ -18,3 +20,5 @@ void cd(char *newdir, char *curdir);
 #define KCYN  "\x1B[36m"
 #define KWHT  "\x1B[37m"
 #define KRESET "\033[0m"
+
+#define CMD_MAX 1024
