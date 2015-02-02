@@ -1,0 +1,6 @@
+Documentation: No Help Received from Others
+
+Valgrind program used to validate memory allocation and to ensure
+no leaks existed
+
+Colored Output code from http://stackoverflow.com/questions/3585846/color-text-in-terminal-aplications-in-unix
