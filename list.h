@@ -50,6 +50,12 @@ node* list_removen(node*, int);
    Parameter: node*: a pointer to the head of a linked list */
 void list_print(node*);
 
+/* list_print_count: print the data contained in each node in the linked list,
+    starting with the head, where each node's data is printed on a separate
+    line, number the items in it in reverse.
+   Parameter: node*: a pointer to the head of a linked list */
+void list_print_count(node*, int);
+
 /* list_printn: print the data contained in the <n>th node of the list
    Parameters:
    - node*: a pointer to the head of a linked list
@@ -69,3 +75,8 @@ char* list_get(node*, int);
     including char*'s and node*'s
    Parameter: node*: a pointer to the head of a linked list */
 void list_destroy(node*);
+
+/* list_get_size: return the count of the number of items in the list
+    Parameter: node*: a pointer to the head of a linked list
+    Return: Count*/
+int list_get_size(node* list);

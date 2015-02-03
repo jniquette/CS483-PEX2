@@ -6,29 +6,46 @@
 int main(void){
   char* curdir = malloc(PATH_MAX);
   char* input = malloc(CMD_MAX);
- // node* commandList;
+  char* input_copy = malloc(CMD_MAX);
+  node* history;
   char** commands;
   //printf("-------\n");
   
   while(1){
   
-  printf("$");  
+  printf(KCYN "$ " KRESET); 
   
   //Get and parse user input as a linked list. The first node is the command,
   //the rest are arguments.
   fgets(input, CMD_MAX, stdin);
+  input_copy = strcpy(input_copy, input);
   commands = parseCommand(input, commands);
   //printf("back to main\n");
   
-    if(strcmp(commands[0], "exit") == 0){
+    if(commands[0] == NULL);
+    else if(strcmp(commands[0], "exit") == 0){
       printSuccess("Goodbye!\n\n");fflush(stdout);
       return 0;   
     }
+    else if(strcmp(commands[0], "recall") == 0){
+      if(!commands[1])
+        printError("Value not specified");
+      else
+        recall(history, atoi(commands[1]));
+    }
+    else if(strcmp(commands[0], "history") == 0){
+      if(!commands[1])
+        list_print_count(history, DEFAULT_HISTORY);
+      else
+        list_print_count(history, atoi(commands[1]));
+    }
     else if(strcmp(commands[0], "cd") == 0){
+      history = addToHistory(input_copy, history);
       cd(commands[1], curdir);
     }
     else{
-      runCommand(commands);
+      runCommand(commands);  
+      history = addToHistory(input_copy, history);
     }
 
     //Need to free commands and commands*
@@ -37,6 +54,16 @@ int main(void){
   return 0;
 }
 
+void recall(node* history, int number){
+  printf("Will recall: %s\n", list_get(history, number));
+}
+
+node* addToHistory(char* input, node* history){
+  //Cut trailing \n from input
+  input = strtok(input, "\n");
+  
+  return list_insert_tail(history, input);
+}
 
 int runCommand(char** args){
   pid_t rtn;
@@ -51,7 +78,7 @@ int runCommand(char** args){
     execvp(args[0], (char*) args);
 	} else { // parent
 		wait(NULL);
-		printSuccess("Child complete.\n");
+		printSuccess("Child complete.");
 	}
 	return 0;
 }

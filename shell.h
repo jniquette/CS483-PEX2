@@ -10,6 +10,8 @@ void printSuccess(char *string);
 void cd(char *newdir, char *curdir);
 char** parseCommand(char *input, char** commands);
 int runCommand(char** args);
+node* addToHistory(char* input, node* history);
+void recall(node* commands, int number);
 
 #define KNRM  "\x1B[0m"
 #define KRED  "\x1B[31m"
@@ -22,3 +24,4 @@ int runCommand(char** args);
 #define KRESET "\033[0m"
 
 #define CMD_MAX 1024
+#define DEFAULT_HISTORY 100

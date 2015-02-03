@@ -107,6 +107,18 @@ void list_print(node* list) {
   }
 }
 
+void list_print_count(node* list, int count) {
+  node* current = list;
+  int size = list_get_size(list);
+  while(current != NULL) {
+    if(size <= count){
+      printf("%d:\t%s\n", size, current->data);
+    }
+    size--;
+    current = current->next;
+  }
+}
+
 void list_printn(node* list, int n) {
   node* current = list;
   int i = 1;
@@ -143,5 +155,15 @@ void list_destroy(node* list) {
     free(current);
     current = nxt;
   }
+}
+
+int list_get_size(node* list){
+  int i = 0;
+  node* current = list;
+  while(current != NULL){
+    i++;
+    current = current->next;
+  }
+  return i;
 }
 
