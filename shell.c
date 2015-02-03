@@ -22,16 +22,18 @@ int main(void){
   commands = parseCommand(input, commands);
   //printf("back to main\n");
   
+  
+    if(strcmp(commands[0], "recall") == 0){
+      if(!commands[1])
+        printError("Value not specified");
+      else
+        commands = recall(history, atoi(commands[1]), commands);
+    }
+  
     if(commands[0] == NULL);
     else if(strcmp(commands[0], "exit") == 0){
       printSuccess("Goodbye!\n\n");fflush(stdout);
       return 0;   
-    }
-    else if(strcmp(commands[0], "recall") == 0){
-      if(!commands[1])
-        printError("Value not specified");
-      else
-        recall(history, atoi(commands[1]));
     }
     else if(strcmp(commands[0], "history") == 0){
       if(!commands[1])
@@ -54,14 +56,16 @@ int main(void){
   return 0;
 }
 
-void recall(node* history, int number){
-  printf("Will recall: %s\n", list_get(history, number));
+char** recall(node* history, int number, char** commands){
+  printf("Will recall: %s\n", list_get(history, list_get_size(history)+1-number));
+  return parseCommand(list_get(history, list_get_size(history)+1-number), commands);
 }
 
 node* addToHistory(char* input, node* history){
+  if(strncmp(input, "recall", 6) == 0)
+    return history;
   //Cut trailing \n from input
   input = strtok(input, "\n");
-  
   return list_insert_tail(history, input);
 }
 

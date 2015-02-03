@@ -11,7 +11,7 @@ void cd(char *newdir, char *curdir);
 char** parseCommand(char *input, char** commands);
 int runCommand(char** args);
 node* addToHistory(char* input, node* history);
-void recall(node* commands, int number);
+char** recall(node* history, int number, char** commands);
 
 #define KNRM  "\x1B[0m"
 #define KRED  "\x1B[31m"
