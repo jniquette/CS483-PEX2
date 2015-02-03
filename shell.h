@@ -12,6 +12,7 @@ char** parseCommand(char *input, char** commands);
 int runCommand(char** args);
 node* addToHistory(char* input, node* history);
 char** recall(node* history, int number, char** commands);
+extern void doPipe();
 
 #define KNRM  "\x1B[0m"
 #define KRED  "\x1B[31m"

@@ -33,7 +33,7 @@ int main(void){
     if(commands[0] == NULL);
     else if(strcmp(commands[0], "exit") == 0){
       printSuccess("Goodbye!\n\n");fflush(stdout);
-      return 0;   
+      exit(EXIT_SUCCESS);   
     }
     else if(strcmp(commands[0], "history") == 0){
       if(!commands[1])
@@ -66,6 +66,7 @@ node* addToHistory(char* input, node* history){
     return history;
   //Cut trailing \n from input
   input = strtok(input, "\n");
+  history = list_remove(history, input);
   return list_insert_tail(history, input);
 }
 
