@@ -8,7 +8,7 @@ int main(void){
   char* input = malloc(CMD_MAX);
  // node* commandList;
   char** commands;
-  printf("-------\n");
+  //printf("-------\n");
   
   while(1){
   
@@ -18,23 +18,42 @@ int main(void){
   //the rest are arguments.
   fgets(input, CMD_MAX, stdin);
   commands = parseCommand(input, commands);
-  printf("back to main\n");
+  //printf("back to main\n");
   
     if(strcmp(commands[0], "exit") == 0){
-      printf("Goodbye!\n\n");fflush(stdout);
+      printSuccess("Goodbye!\n\n");fflush(stdout);
       return 0;   
     }
     else if(strcmp(commands[0], "cd") == 0){
       cd(commands[1], curdir);
     }
     else{
-      printError("unimplemented");fflush(stdout);
+      runCommand(commands);
     }
 
     //Need to free commands and commands*
   }
 
   return 0;
+}
+
+
+int runCommand(char** args){
+  pid_t rtn;
+	int i;
+	
+	rtn = fork();
+	
+	if (rtn < 0) {  // error
+		printError("Could not create child process.");
+	}
+	else if (rtn == 0 ) {// child
+    execvp(args[0], (char*) args);
+	} else { // parent
+		wait(NULL);
+		printSuccess("Child complete.\n");
+	}
+	return 0;
 }
 
 char** parseCommand(char *input, char** commands){//node *commandList){
@@ -51,20 +70,20 @@ char** parseCommand(char *input, char** commands){//node *commandList){
   int i = 0;
   
   while(1){
-    printf("Attempting to insert a command\n");
+    //printf("Attempting to insert a command\n");
     if(i == 0)
       thisArg = strtok(input, " ");
     else
       thisArg = strtok(NULL, " ");
     if(thisArg == NULL){//strcmp(thisArg, "") == 0){
-      printf("it's null\n");
+      //printf("it's null\n");
       break;
     }
     else{
       commands[i] = thisArg;
-      printf("inserted %s\n", commands[i]);
+      //printf("inserted %s\n", commands[i]);
       i++;
-      printf("Reallocating for %d string*'s, total size is %d\n", i, (int) (i*sizeof(char*)));
+      //printf("Reallocating for %d string*'s, total size is %d\n", i, (int) (i*sizeof(char*)));
       commands = realloc(commands, i*sizeof(char*));
     }
   }

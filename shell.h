@@ -8,8 +8,8 @@
 void printError(char *string);
 void printSuccess(char *string);
 void cd(char *newdir, char *curdir);
-//node* parseCommand(char *input, node *command);
 char** parseCommand(char *input, char** commands);
+int runCommand(char** args);
 
 #define KNRM  "\x1B[0m"
 #define KRED  "\x1B[31m"
