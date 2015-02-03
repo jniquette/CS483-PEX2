@@ -6,7 +6,8 @@
 int main(void){
   char* curdir = malloc(PATH_MAX);
   char* input = malloc(CMD_MAX);
-  node* commandList;
+ // node* commandList;
+  char** commands;
   printf("-------\n");
   
   while(1){
@@ -16,56 +17,59 @@ int main(void){
   //Get and parse user input as a linked list. The first node is the command,
   //the rest are arguments.
   fgets(input, CMD_MAX, stdin);
-  commandList = parseCommand(input, commandList);
+  commands = parseCommand(input, commands);
+  printf("back to main\n");
   
-  //list_print(commandList);
-  
-  
-      //printf("first item is: %s\n", commandList->data);fflush(stdout);
-
-    if(strcmp(commandList->data, "exit") == 0){
+    if(strcmp(commands[0], "exit") == 0){
       printf("Goodbye!\n\n");fflush(stdout);
       return 0;   
     }
-    else if(strcmp(commandList->data, "cd") == 0){
-      cd(commandList->next->data, curdir);
+    else if(strcmp(commands[0], "cd") == 0){
+      cd(commands[1], curdir);
     }
     else{
       printError("unimplemented");fflush(stdout);
     }
-    }
+
+    //Need to free commands and commands*
+  }
 
   return 0;
 }
 
-node* parseCommand(char *input, node *commandList){
+char** parseCommand(char *input, char** commands){//node *commandList){
   //printf("In parseCommand\n");  
-  int argCount = 0;
   char* thisArg;
+  commands = malloc(sizeof(char*));
   //list_destroy(commandList);
+  char constant[5];
   
   
   //Cut trailing \n from input
   input = strtok(input, "\n");
   
+  int i = 0;
+  
   while(1){
-    if(argCount == 0)
+    printf("Attempting to insert a command\n");
+    if(i == 0)
       thisArg = strtok(input, " ");
     else
       thisArg = strtok(NULL, " ");
-    //printf("thisArg: %s\n", thisArg);
-    if(thisArg == NULL){
-      //printf("End of the arguments\n");  
+    if(thisArg == NULL){//strcmp(thisArg, "") == 0){
+      printf("it's null\n");
       break;
     }
     else{
-      commandList = list_insert_tail(commandList, thisArg);
-      //printf("added %s to arguments\n", thisArg);
-      argCount++;
+      commands[i] = thisArg;
+      printf("inserted %s\n", commands[i]);
+      i++;
+      printf("Reallocating for %d string*'s, total size is %d\n", i, (int) (i*sizeof(char*)));
+      commands = realloc(commands, i*sizeof(char*));
     }
   }
   
-  return commandList;
+  return commands;
 }
 
 void cd(char *newdir, char *curdir){
